@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DashboardController as AdminDashbordController;
+use App\Http\Controllers\Admin\BrandController as AdminBrandController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,14 +17,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('front.index');
 
-Route::middleware([
+// prefix untuk memberikan admin pada setiap url "/admin/dashbord"
+// name
+Route::prefix('admin')->name('admin.')->middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
-    'verified'
+    'verified',
+    'admin'
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [AdminDashbordController::class,'index'])->name('dashboard'); //memanggil satuan controller biasa
+    Route::resource('brands',AdminBrandController::class); //memanggil crud atau controller resource
 });
