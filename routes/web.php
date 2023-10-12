@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController as AdminDashbordController;
 use App\Http\Controllers\Admin\BrandController as AdminBrandController;
+use App\Http\Controllers\Admin\TypeController as AdminTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +30,5 @@ Route::prefix('admin')->name('admin.')->middleware([
 ])->group(function () {
     Route::get('/dashboard', [AdminDashbordController::class,'index'])->name('dashboard'); //memanggil satuan controller biasa
     Route::resource('brands',AdminBrandController::class); //memanggil crud atau controller resource
+    Route::resource('types',AdminTypeController::class);
 });
