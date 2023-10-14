@@ -9,41 +9,53 @@
   <x-slot name="script">
     <script>
       // AJAX DataTable
-        var datatable = $('#dataTable').DataTable({
-          processing: true,
-          serverSide: true,
-          stateSave: true,
-          ajax: {
-            url: '{!! url()->current() !!}',
+      var datatable = $('#dataTable').DataTable({
+        processing: true,
+        serverSide: true,
+        stateSave: true,
+        ajax: {
+          url: '{!! url()->current() !!}',
+        },
+        language: {
+          url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/id.json'
+        },
+        columns: [{
+            data: 'id',
+            name: 'id',
           },
-          language: {
-            url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/id.json'
+          {
+            data: 'thumbnail',
+            name: 'thumbnail',
+            orderable: false,
+            searchable: false,
+          
           },
-          columns: [{
-              data: 'id',
-              name: 'id',
-            },
-            {
-              data: 'name',
-              name: 'name'
-            },
-            {
-              data: 'type.name',
-              name: 'type.name'
-            },
-            {
-              data: 'brand.name',
-              name: 'brand.name'
-            },
-            {
-              data: 'action',
-              name: 'action',
-              orderable: false,
-              searchable: false,
-              width: '15%',
-            },
-          ],
-        });
+          {
+            data: 'name',
+            name: 'name'
+          },
+          {
+            data: 'type.name',
+            name: 'type.name'
+          },
+          {
+            data: 'brand.name',
+            name: 'brand.name'
+          },
+          {
+            data: 'price',
+            name: 'price'
+          },
+          {
+            data: 'action',
+            name: 'action',
+            orderable: false,
+            searchable: false,
+            width: '15%'
+          },
+        ],
+      });
+  
     </script>
   </x-slot>
 
@@ -61,9 +73,11 @@
             <thead>
               <tr>
                 <th style="max-width: 1%">ID</th>
+                <th>Thumbnail</th>
                 <th>Nama</th>
                 <th>Type</th>
                 <th>Brand</th>
+                <th>Harga</th>
                 <th>Aksi</th>
               </tr>
             </thead>
