@@ -133,7 +133,7 @@ class ItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,Item $item)
+    public function update(ItemRequest $request,Item $item)
     {
         $data = $request->all();
 

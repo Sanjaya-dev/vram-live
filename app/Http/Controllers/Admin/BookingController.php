@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Type;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use App\Http\Requests\TypeRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BookingRequest;
+use App\Models\Booking;
 
-class TypeController extends Controller
+class BookingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,17 +17,20 @@ class TypeController extends Controller
      */
     public function index()
     {
-        if(request()->ajax()){
-            $query = Type::query();
+        if(request()->ajax())
+        {
+
+            $query = Booking::with(['item.brand','user']);
+
 
             return DataTables::of($query)
-                ->addColumn('action', function($type){
+                ->addColumn('action', function($booking){
                     return '
                     <a class="block w-full px-2 py-1 mb-1 text-xs text-center text-white transition duration-500 bg-gray-700 border border-gray-700 rounded-md select-none ease hover:bg-gray-800 focus:outline-none focus:shadow-outline" 
-                        href="' . route('admin.types.edit', $type->id) . '">
+                        href="' . route('admin.bookings.edit', $booking->id) . '">
                         Sunting
                     </a>
-                    <form class="block w-full" onsubmit="return confirm(\'Apakah anda yakin?\');" -block" action="' . route('admin.types.destroy', $type->id) . '" method="POST">
+                    <form class="block w-full" onsubmit="return confirm(\'Apakah anda yakin?\');" -block" action="' . route('admin.bookings.destroy', $booking->id) . '" method="POST">
                     <button class="w-full px-2 py-1 text-xs text-white transition duration-500 bg-red-500 border border-red-500 rounded-md select-none ease hover:bg-red-600 focus:outline-none focus:shadow-outline" >
                         Hapus
                     </button>
@@ -40,8 +42,8 @@ class TypeController extends Controller
                 ->make();
         }
 
-        // script return halaman view type
-        return view('admin.types.index');
+        // script return halaman view item
+        return view('admin.bookings.index');
     }
 
     /**
@@ -51,7 +53,7 @@ class TypeController extends Controller
      */
     public function create()
     {
-        return view('admin.types.create');
+        //
     }
 
     /**
@@ -60,14 +62,9 @@ class TypeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(TypeRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->all();
-        $data['slug'] = Str::slug($data['name']. '-' . Str::lower(Str::random(5)));
-        
-        Type::create($data);
-
-        return redirect()->route('admin.types.index')->with('success','Merek berhasil di tambahkan');
+        //
     }
 
     /**
@@ -87,11 +84,9 @@ class TypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Type $type)
+    public function edit(Booking $booking)
     {
-        return view('admin.types.edit',[
-            'type' => $type
-        ]);
+        return view('admin.bookings.edit', compact('booking'));
     }
 
     /**
@@ -101,14 +96,13 @@ class TypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(TypeRequest $request, Type $type)
+    public function update(BookingRequest $request, Booking $booking)
     {
         $data = $request->all();
-        $data['slug'] = Str::slug($data['name']) . '-' . Str::lower(Str::random(5));
 
-        $type->update($data);
+        $booking->update($data);
 
-        return redirect()->route('admin.types.index');
+        return redirect()->route('admin.bookings.index');
     }
 
     /**
@@ -117,10 +111,10 @@ class TypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Type $type)
+    public function destroy(Booking $booking)
     {
-        $type->delete();
+        $booking->delete();
 
-        return redirect()->route('admin.types.index');
+        return redirect()->route('admin.bookings.index');
     }
 }
