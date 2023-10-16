@@ -6,6 +6,9 @@ use App\Http\Controllers\Admin\BrandController as AdminBrandController;
 use App\Http\Controllers\Admin\TypeController as AdminTypeController;
 use App\Http\Controllers\Admin\ItemController as AdminItemController;
 use App\Http\Controllers\Admin\BookingController as AdminBookingController;
+use App\Http\Controllers\Front\DetailController;
+use App\Http\Controllers\Front\LandingController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,9 +20,10 @@ use App\Http\Controllers\Admin\BookingController as AdminBookingController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('front.index');
+Route::name('front.')->group(function(){
+    Route::get('/',[LandingController::class,'index'])->name('index');
+    Route::get('/detail/{slug}',[DetailController::class,'index'])->name('detail');
+});
 
 // prefix untuk memberikan admin pada setiap url "/admin/dashbord"
 // name
